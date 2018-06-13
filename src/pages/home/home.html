@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Colby's ToDo
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label floating>ToDo Item</ion-label>
+      <ion-input type="text" [(ngModel)]="name"></ion-input>
+    </ion-item>
+    <button ion-button color="secondary" (click)="createTodo()">Add ToDo</button>
+    <button ion-button color="danger" (click)="clearTodos()">Clear All ToDos</button>
+    <ion-item>
+      <ion-label color="dark">
+        Filter
+      </ion-label>
+      <ion-select [(ngModel)]="filter">
+        <ion-option value="All" selected>All</ion-option>
+        <ion-option value="Pending">Pending</ion-option>
+        <ion-option value="Complete">Complete</ion-option>
+        <ion-option value="Overdue">Overdue</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  <ion-list>
+    <div *ngFor="let todo of todos">
+      <ion-item *ngIf="filter === 'All' || todo.status === filter" [class.Pending]="todo.status === 'Pending'" [class.Complete]="todo.status === 'Complete'" [class.Overdue]="todo.status === 'Overdue'">
+        <ion-label color="light">
+          {{todo.name}}
+        </ion-label>
+        <ion-select #E (ionChange)="changeTodo(E.value, todo.id)">
+          <ion-option selected value="Options">Options</ion-option>
+          <ion-option value="Edit">Edit Todo</ion-option>
+          <ion-option value="Delete">Delete Todo</ion-option>
+        </ion-select>
+        <ion-select interface="popover" #C (ionChange)="statusChange(C.value, todo.id)" [(ngModel)]="todo.status">
+          <ion-option value="Pending">Pending</ion-option>
+          <ion-option value="Complete">Complete</ion-option>
+          <ion-option value="Overdue">Overdue</ion-option>
+        </ion-select>
+      </ion-item>
+    </div>
+  </ion-list>
+</ion-content>
